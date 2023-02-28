@@ -1,0 +1,82 @@
+/* Global styles */
+* {
+  padding: 0;
+  margin: 0;
+  outline: none;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+div {
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Remove autofill color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition: 'color 9999s ease-out, background-color 9999s ease-out';
+  -webkit-transition-delay: 9999s;
+}
+
+.app {
+  position: relative;
+  display: flex;
+  // flex: 220px 100%;
+}
+
+.main-btn {
+  cursor: pointer;
+  height: 40px;
+  padding: 0 15px;
+  background-color: #3f5888;
+  border-radius: 8px;
+  border: none;
+  color: rgba(255, 255, 255, 0.95);
+  transition: 0.2s linear;
+}
+
+.main-btn:hover {
+  background-color: #2c446d;
+}
+
+.main-btn:active {
+  transform: scale(0.95);
+}
+
+.main-btn-white {
+  cursor: pointer;
+  height: 40px;
+  padding: 0 15px;
+  border-radius: 8px;
+  border: none;
+  color: #3f5888;
+  background-color: #fff;
+  box-shadow: 0px 0px 7px -2px #3f5888;
+  transition: 0.2s linear;
+}
+
+.main-btn-white:hover {
+  color: #fff;
+  background-color: rgb(33, 115, 70);
+}
+
+.add-excel__btn:hover .download-icon {
+  path {
+    color: #fff !important;
+  }
+}
+
+.disabled {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.5;
+}

@@ -1,0 +1,108 @@
+.message-box {
+  position: fixed;
+  z-index: 11111111111;
+  top: 30px;
+  right: 50px;
+  width: 300px;
+  height: 50px;
+  background-color: #15922a;
+  box-shadow: 0px 0px 23px -8px rgb(0 125 153 / 43%);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .message-box__text {
+    font-weight: 600;
+    color: #fffffff0;
+  }
+}
+
+.add-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 11111111111;
+  width: 80%;
+  height: 75vh;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 23px -8px rgb(0 125 153 / 43%);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .add-modal-form {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 50px;
+
+    .add-modal__row {
+      // width: 60%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      .add-modal__input-block {
+        display: flex;
+        flex-direction: column;
+        margin-right: 40px;
+
+        label {
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+
+        input {
+          height: 30px;
+          padding: 0 5px;
+          border-radius: 5px;
+          border: none;
+          text-indent: 5px;
+          border: 1px solid #3f588814;
+          // background-color: #f7f7f7;
+          transition: 0.1s linear;
+        }
+
+        input[type='date'] {
+          text-indent: 3px;
+        }
+
+        input:not([disabled]):hover {
+          border: 1px solid #3f588855;
+        }
+
+        input:focus {
+          border: 1px solid #3f5888;
+        }
+      }
+    }
+  }
+
+  .add-modal__btn-block {
+    display: flex;
+    justify-content: flex-end;
+
+    .add-modal__save-btn {
+      width: 200px;
+      height: 45px;
+    }
+  }
+
+  .close-icon {
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 26px;
+    transition: 0.1s linear;
+  }
+
+  .close-icon:hover path {
+    color: rgb(237, 68, 68);
+  }
+}
