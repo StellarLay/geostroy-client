@@ -16,6 +16,7 @@ $menu-item-color: #3a3b5a;
 }
 
 .sidebar-block {
+  width: 220px;
   position: fixed;
   flex-basis: 220px;
   display: flex;
@@ -72,7 +73,8 @@ $menu-item-color: #3a3b5a;
           display: flex;
           align-items: center;
           border-radius: 14px;
-          padding: 18px 15px 18px 25px;
+          padding-left: 25px;
+          height: 60px;
           transition: 0.2s linear;
 
           .menu-icon {
@@ -80,8 +82,16 @@ $menu-item-color: #3a3b5a;
           }
 
           .menu-block__li-text {
+            width: 100%;
+            display: flex;
+            align-items: center;
             margin-left: 15px;
             font-size: 14px;
+            height: 100%;
+          }
+
+          .menu-block__li-text:hover {
+            color: rgba(255, 255, 255, 0.9);
           }
         }
 

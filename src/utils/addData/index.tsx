@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import '../modal.scss';
 
+import InputMask from 'react-input-mask';
+
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ISensorsData } from '../../config/types';
@@ -37,16 +39,21 @@ const AddDataModal = (props: any) => {
   const addHandler = async (e: any) => {
     e.preventDefault();
 
+    const formatDate = new Date(formData.device_time);
+    formatDate.setHours(formatDate.getHours() + 3);
+    const mysqlDate = formatDate.toISOString().slice(0, 19).replace('T', ' ');
+
+    formData.device_time = mysqlDate;
+
     try {
       await request(`${config.URL}/api/addSensorData/`, 'POST', {
         ...formData,
       });
-      //console.log('Data: ' + data);
-      //setIsLogin(true);
+
       props.isOpen(false);
       props.isSuccess(true);
-    } catch (e) {
-      //setIsLogin(false);
+    } catch (e: any) {
+      console.log(e.message);
     }
   };
 
@@ -90,10 +97,12 @@ const AddDataModal = (props: any) => {
           </div>
           <div className='add-modal__input-block'>
             <label>Время по устройству</label>
-            <input
-              type='date'
+            <InputMask
+              mask='99-99-9999 99:99'
+              type='text'
               name='device_time'
               onChange={(e) => changeHandler(e)}
+              required
             />
           </div>
           <div className='add-modal__input-block'>
@@ -102,6 +111,7 @@ const AddDataModal = (props: any) => {
               type='text'
               name='error_code'
               onChange={(e) => changeHandler(e)}
+              required
             />
           </div>
         </div>
@@ -112,6 +122,7 @@ const AddDataModal = (props: any) => {
               type='text'
               name='adc_lvl'
               onChange={(e) => changeHandler(e)}
+              required
             />
           </div>
           <div className='add-modal__input-block'>
@@ -120,6 +131,7 @@ const AddDataModal = (props: any) => {
               type='text'
               name='lvl_m'
               onChange={(e) => changeHandler(e)}
+              required
             />
           </div>
           <div className='add-modal__input-block'>
@@ -128,6 +140,7 @@ const AddDataModal = (props: any) => {
               type='text'
               name='lvl_m_corr'
               onChange={(e) => changeHandler(e)}
+              required
             />
           </div>
           <div className='add-modal__input-block'>
@@ -136,6 +149,7 @@ const AddDataModal = (props: any) => {
               type='text'
               name='battery_voltage'
               onChange={(e) => changeHandler(e)}
+              required
             />
           </div>
           <div className='add-modal__input-block'>
@@ -144,25 +158,44 @@ const AddDataModal = (props: any) => {
               type='text'
               name='battery_charge'
               onChange={(e) => changeHandler(e)}
+              required
             />
           </div>
         </div>
         <div className='add-modal__row'>
           <div className='add-modal__input-block'>
-            <label>Режим работы (1 или 2)</label>
-            <input
-              type='text'
-              name='working_mode'
-              onChange={(e) => changeHandler(e)}
-            />
-          </div>
-          <div className='add-modal__input-block'>
             <label>Время сна</label>
-            <input
+            <InputMask
+              mask='99:99'
               type='text'
               name='sleep_time'
               onChange={(e) => changeHandler(e)}
+              required
             />
+          </div>
+          <div className='add-modal__input-block'>
+            <label>Режим работы</label>
+            <div className='add-modal__input-block__radio-item'>
+              <input
+                id='mode_first'
+                type='radio'
+                value='1'
+                name='working_mode'
+                onChange={(e) => changeHandler(e)}
+                checked
+              />
+              <label htmlFor='mode_first'>Удаленное управление</label>
+            </div>
+            <div className='add-modal__input-block__radio-item'>
+              <input
+                id='mode_second'
+                type='radio'
+                name='working_mode'
+                value='2'
+                onChange={(e) => changeHandler(e)}
+              />
+              <label htmlFor='mode_second'>Цикл</label>
+            </div>
           </div>
         </div>
         <div className='add-modal__btn-block'>

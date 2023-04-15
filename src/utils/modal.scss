@@ -3,9 +3,10 @@
   z-index: 11111111111;
   top: 30px;
   right: 50px;
-  width: 300px;
+  padding: 0 15px;
+  width: auto;
   height: 50px;
-  background-color: #15922a;
+  background-color: rgba(37, 118, 79, 1);
   box-shadow: 0px 0px 23px -8px rgb(0 125 153 / 43%);
   border-radius: 5px;
   display: flex;
@@ -18,11 +19,16 @@
   }
 }
 
+// Стили для компонента AddData
+input[type='text']:disabled {
+  color: #000000ac;
+}
+
 .add-modal {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) !important;
   z-index: 11111111111;
   width: 80%;
   height: 75vh;
@@ -33,6 +39,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  h1 {
+    font-size: 2em;
+    color: #000000c3;
+  }
 
   .add-modal-form {
     display: flex;
@@ -68,17 +79,32 @@
           transition: 0.1s linear;
         }
 
-        input[type='date'] {
-          text-indent: 3px;
+        .add-modal__input-block__radio-item {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+
+          input {
+            width: auto;
+          }
+
+          label {
+            margin-bottom: 3px;
+            margin-left: 5px;
+          }
         }
 
-        input:not([disabled]):hover {
-          border: 1px solid #3f588855;
+        input[type='date'] {
+          text-indent: 3px;
         }
 
         input:focus {
           border: 1px solid #3f5888;
         }
+      }
+
+      .add-modal__input-block:has(input[name='FIO']) {
+        width: 25%;
       }
     }
   }
@@ -105,4 +131,40 @@
   .close-icon:hover path {
     color: rgb(237, 68, 68);
   }
+}
+
+/* change user form */
+.change-user-modal {
+  height: 450px;
+
+  .change-user-form {
+    input:not(.select-block input) {
+      height: 45px !important;
+    }
+
+    .change-user-perm__select-block {
+      flex: 1;
+    }
+
+    .change-user-obj__select-block {
+      flex: 1;
+    }
+
+    .add-modal__row {
+      align-items: flex-start;
+    }
+
+    .select-user-objects {
+      div[role='button'] svg {
+        fill: #fff;
+        margin-top: 2px;
+      }
+
+      color: #c73d3d;
+    }
+  }
+}
+
+.error-color {
+  background-color: #921515;
 }

@@ -16,6 +16,12 @@ li {
 
 a {
   text-decoration: none;
+  color: #cf3e61;
+  transition: 0.1s linear;
+}
+
+a:hover {
+  color: #b02e4c;
 }
 
 /* Remove autofill color */
@@ -27,7 +33,7 @@ input:-webkit-autofill:active {
   -webkit-transition-delay: 9999s;
 }
 
-.app {
+.app-main {
   position: relative;
   display: flex;
   // flex: 220px 100%;
@@ -79,4 +85,12 @@ input:-webkit-autofill:active {
   cursor: default;
   pointer-events: none;
   opacity: 0.5;
+}
+
+.loader {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: #1f2036;
 }

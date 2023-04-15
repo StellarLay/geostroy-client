@@ -147,12 +147,27 @@
         align-items: center;
 
         .filter-block__date-to,
-        .filter-block__apply-btn {
+        .filter-block__apply-btn,
+        .filter-block__fields,
+        .filter-block__clear-btn {
           margin-left: 25px;
+        }
+
+        .filter-block__clear-btn {
+          border: none;
+          background-color: #4a7faf;
+          transition: 0.2s linear;
+        }
+
+        .clear-filter__btn:hover {
+          background-color: #32608c;
         }
 
         .filter-block__date-from,
         .filter-block__date-to {
+          display: flex;
+          align-items: center;
+
           span {
             margin-right: 10px;
             font-weight: 600;
@@ -163,6 +178,15 @@
             padding: 0 8px;
             border-radius: 8px;
             border: 1px solid rgba(0, 0, 0, 0.08);
+          }
+        }
+
+        .filter-block__fields {
+          display: flex;
+          align-items: center;
+
+          input {
+            height: 40px;
           }
         }
       }
@@ -256,6 +280,10 @@
 
             .select-block {
               margin-top: 10px;
+
+              input {
+                height: 40px;
+              }
             }
           }
 

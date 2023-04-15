@@ -17,7 +17,7 @@ const ResultGrid = (props: any) => {
   const [sensorId, setSensorId] = useState(null);
 
   // Деструктуризация пропсов
-  const { sensorData, activePiezo, getSensorIdModal } = props;
+  const { sensorData, activePiezo, getSensorIdModal, filterData } = props;
 
   // Отлавливаем активный объект (через useCallBack заходим только при изменении значения)
   const updateBindSensor = useCallback((value: boolean) => {
@@ -64,7 +64,7 @@ const ResultGrid = (props: any) => {
         isChangedBindStatus={isClickBindBtn}
         getSensorIdModal={getSensorIdModal}
       />
-      <DataTable sensorData={sensorData} />
+      <DataTable sensorData={sensorData} filterData={filterData} />
     </div>
   );
 };

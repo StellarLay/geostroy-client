@@ -27,6 +27,12 @@ const useHttp = () => {
 
         return data;
       } catch (e: any) {
+        setLoading(false);
+
+        if (e.message === 'Failed to fetch') {
+          e.message = 'Соединение с сервером отсутствует!';
+        }
+
         setError(e.message);
         throw e;
       }

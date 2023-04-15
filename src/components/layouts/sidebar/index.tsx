@@ -6,9 +6,11 @@ import './sidebar.scss';
 
 const SideBar = () => {
   return (
-    <div className='sidebar-block'>
-      <Profile />
-      <Menu />
+    <div className='sidebar-container'>
+      <div className='sidebar-block'>
+        <Profile />
+        <Menu />
+      </div>
     </div>
   );
 };
