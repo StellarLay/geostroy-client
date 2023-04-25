@@ -45,13 +45,19 @@ const ObjectsBlock = (props: any) => {
           Authorization: `Bearer ${auth.accessToken}`,
         };
         const url = `${config.URL}/api/getObjects`;
-        const data = await request(url, 'GET', null, authorization);
+        const data = await request(
+          url,
+          'POST',
+          { user_id: auth.user_id, access_name: auth.access_name },
+          authorization
+        );
+
+        setObjects(data.results);
 
         // Если токен просрочен, создаем новый токен
         if (data.status && data.status === 403) {
           createToken();
         }
-        setObjects(data.results);
       } catch (err: any) {
         console.log(err);
       }
@@ -65,6 +71,7 @@ const ObjectsBlock = (props: any) => {
     auth.accessToken,
     auth.refreshToken,
     auth.user_id,
+    auth.access_name,
     isRemove,
   ]);
 
@@ -95,21 +102,25 @@ const ObjectsBlock = (props: any) => {
         <span>Объект</span>
       </div>
       <div className='table-items'>
-        {objects.map((item) => (
-          <div
-            key={item.id}
-            className={`table-item ${activeObject === item && activeClass}`}
-            onClick={(e) => selectActiveObject(e, item.id)}
-          >
-            <span className='table-item__text'>{item.name}</span>
-            <FontAwesomeIcon
-              icon={faEllipsisVertical}
-              className='dots-vertical-icon'
-              title='Параметры'
-              onClick={() => setIsEdit(true)}
-            />
-          </div>
-        ))}
+        {objects.length !== 0 ? (
+          objects.map((item) => (
+            <div
+              key={item.id}
+              className={`table-item ${activeObject === item && activeClass}`}
+              onClick={(e) => selectActiveObject(e, item.id)}
+            >
+              <span className='table-item__text'>{item.name}</span>
+              <FontAwesomeIcon
+                icon={faEllipsisVertical}
+                className='dots-vertical-icon'
+                title='Параметры'
+                onClick={() => setIsEdit(true)}
+              />
+            </div>
+          ))
+        ) : (
+          <div>Нет</div>
+        )}
         {isEdit && (
           <Edit
             height={posYObject}

@@ -32,14 +32,25 @@ const ChangeUserForm = (props: any) => {
   const [activeObjects, setActiveObjects] = useState<ISelectOptionsProps[]>([]);
 
   const [formData, setFormData] = useState<IChangeUserProps>({
+    user_id: activeUser.id,
     FIO: activeUser.FIO,
     email: activeUser.email,
-    access_name: 'test',
-    objects: [],
+    access_lvl: activeUser.access_lvl,
+    access_name: activeUser.access_name,
+    password: '',
   });
+
+  // const [objectsData, setObjectsData] = useState<IObjectsDataProps>({
+  //   user_id: activeUser.id,
+  //   items: activeObjects
+  // });
+
+  //console.log(activeObjects);
 
   const auth = useContext(AuthContext);
   const { request } = useHttp();
+
+  //console.log(activeUser);
 
   // Заполняем стейт данными с полей
   const changeHandler = (e: any) => {
@@ -50,21 +61,40 @@ const ChangeUserForm = (props: any) => {
   const submitHandler = async (e: any) => {
     e.preventDefault();
 
-    try {
-      await request(`${config.URL}/api/addSensorData/`, 'POST', {
-        ...formData,
-      });
+    const fetchUpdateUser = async () => {
+      try {
+        await request(`${config.URL}/api/updateUser/`, 'POST', {
+          ...formData,
+        });
 
-      props.isOpen(false);
-      props.isSuccess(true);
-    } catch (e: any) {
-      console.log(e.message);
-    }
+        props.isOpen(false);
+        props.isUpdatedUser(true);
+      } catch (e: any) {
+        console.log(e.message);
+      }
+    };
+
+    const fetchUpdateObjectsOfUser = async () => {
+      try {
+        await request(
+          `${config.URL}/api/updateUsersOfObjects/${activeUser.id}`,
+          'POST',
+          {
+            activeObjects,
+          }
+        );
+      } catch (e: any) {
+        console.log(e.message);
+      }
+    };
+
+    fetchUpdateUser();
+    fetchUpdateObjectsOfUser();
   };
 
   // Select access_name event
   const selectedAccess = (option: any) => {
-    console.log(option);
+    setFormData({ ...formData, access_lvl: option.id });
   };
 
   // Select objects event
@@ -98,7 +128,12 @@ const ChangeUserForm = (props: any) => {
         Authorization: `Bearer ${auth.accessToken}`,
       };
       const url = `${config.URL}/api/getObjects`;
-      const data = await request(url, 'GET', null, authorization);
+      const data = await request(
+        url,
+        'POST',
+        { user_id: auth.user_id, access_name: auth.access_name },
+        authorization
+      );
 
       // Преобразуем data в нужный нам формат для тега select
       let opt: { id: any; value: any; label: any }[] = [];

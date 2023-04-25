@@ -54,12 +54,15 @@ const DataBlock = (props: any) => {
         const data = await request(url, 'GET', null, authorization);
 
         setSensor(data);
+        console.log(activePiezo.length);
       } catch (e) {
         console.log(e);
       }
     };
 
-    fetchData();
+    if (activePiezo.length !== 0) {
+      fetchData();
+    }
   }, [
     request,
     activePiezo,

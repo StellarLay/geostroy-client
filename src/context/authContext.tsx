@@ -14,6 +14,7 @@ interface IAuthContext {
     access_name: any
   ) => void;
   logout: () => void;
+  updateToken: (token: any) => void;
   isAuthenticated: boolean;
   access_lvl: number | null;
   access_name: string | null;
@@ -28,6 +29,7 @@ export const AuthContext = createContext<IAuthContext>({
   user_id: null,
   login: noop,
   logout: noop,
+  updateToken: noop,
   isAuthenticated: false,
   access_lvl: null,
   access_name: null,

@@ -2,7 +2,6 @@ import { useCallback, useContext } from 'react';
 
 // Include hooks
 import useHttp from './http.hook';
-import useAuth from './auth.hook';
 
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
@@ -14,7 +13,6 @@ const useCreateToken = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const { updateToken } = useAuth();
   const { request } = useHttp();
 
   // Logout
@@ -29,6 +27,7 @@ const useCreateToken = () => {
         refresh_token: auth.refreshToken,
         user_id: auth.user_id,
       };
+
       const url = `${config.URL}/auth/token`;
       const data = await request(url, 'POST', body);
 
@@ -39,12 +38,12 @@ const useCreateToken = () => {
 
       // Иначе обновляем токен
       else {
-        updateToken(data.accessToken);
+        auth.updateToken(data.accessToken);
       }
     } catch (e: any) {
       console.log(e);
     }
-  }, [logoutHandler, request, updateToken, auth.refreshToken, auth.user_id]);
+  }, [logoutHandler, request, auth]);
 
   return { createToken };
 };

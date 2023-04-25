@@ -1,9 +1,7 @@
-import { useEffect, useRef, useContext, useState } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import '../context.scss';
 
 import { motion, AnimatePresence } from 'framer-motion';
-
-import ChangeUserForm from '../../../utils/changeUser';
 
 // Include hooks
 import useHttp from '../../../hooks/http.hook';
@@ -18,8 +16,6 @@ const EditUser = (props: any) => {
   const { request } = useHttp();
 
   const { activeUser, isOpen } = props;
-
-  const [isOpenForm, setIsOpenForm] = useState(false);
 
   const styles = {
     top: props.height + 20,
@@ -96,9 +92,6 @@ const EditUser = (props: any) => {
           Удалить
         </span>
       </motion.div>
-      {isOpenForm && (
-        <ChangeUserForm isOpen={setIsOpenForm} activeUser={activeUser} />
-      )}
     </AnimatePresence>
   );
 };

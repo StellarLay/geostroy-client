@@ -24,6 +24,7 @@ import { IUsersProps } from '../../config/types';
 
 import { AuthContext } from '../../context/authContext';
 import ChangeUserForm from '../../utils/changeUser';
+import AddUserForm from '../../utils/addUser';
 
 const UsersPage = () => {
   const auth = useContext(AuthContext);
@@ -36,11 +37,15 @@ const UsersPage = () => {
   const [filteredUsers, setFilteredUsers] = useState<IUsersProps[]>([]);
   const [search, setSearch] = useState('');
   const [isOpenForm, setIsOpenForm] = useState(false);
+  const [isOpenAddUserForm, setIsOpenAddUserForm] = useState(false);
 
   // States for context menu
   const [posYObject, setPosYObject] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [isRemove, setIsRemove] = useState(false);
+  const [isUpdated, setIsUpdated] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
 
   // Заголовки таблицы
@@ -74,15 +79,15 @@ const UsersPage = () => {
           createToken();
         }
 
-        setUsers(data);
-        setFilteredUsers(data);
+        setUsers(data.results);
+        setFilteredUsers(data.results);
       } catch (err: any) {
         console.log(err);
       }
     };
 
     fetchData();
-  }, [request, createToken, auth.accessToken, isRemove]);
+  }, [request, createToken, auth.accessToken, isRemove, isUpdated, isAdded]);
 
   // Событие поиска
   const searchHandler = (e: any) => {
@@ -107,18 +112,29 @@ const UsersPage = () => {
   // Закрываем модалку через 3 секунды
   useEffect(() => {
     if (isRemove) {
-      console.log('gg');
       setMessage(`Пользователь <${activeUser!.FIO}> успешно удалён.`);
-      const timer = setTimeout(() => {
-        setIsRemove(false);
-      }, 3000);
-      return () => clearTimeout(timer);
     }
-  }, [isRemove, activeUser]);
+
+    if (isUpdated) {
+      setMessage(`Данные пользователя <${activeUser!.FIO}> успешно изменены.`);
+    }
+
+    if (isAdded) {
+      setMessage(`Пользователь успешно добавлен.`);
+    }
+
+    const timer = setTimeout(() => {
+      setIsRemove(false);
+      setIsUpdated(false);
+      setIsAdded(false);
+      setIsError(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [isRemove, isUpdated, isAdded, isError, activeUser]);
 
   // Click add user btn
   const addUserHandler = () => {
-    //setIsOpenForm(true);
+    setIsOpenAddUserForm(true);
   };
 
   return (
@@ -214,9 +230,23 @@ const UsersPage = () => {
               activeUser={activeUser}
             />
           )}
-          {isRemove && <MessageBox message={message} />}
+          {(isRemove || isUpdated || isAdded || isError) && (
+            <MessageBox message={message} color={isError && 'error'} />
+          )}
           {isOpenForm && (
-            <ChangeUserForm isOpen={setIsOpenForm} activeUser={activeUser} />
+            <ChangeUserForm
+              isOpen={setIsOpenForm}
+              activeUser={activeUser}
+              isUpdatedUser={setIsUpdated}
+            />
+          )}
+          {isOpenAddUserForm && (
+            <AddUserForm
+              isOpen={setIsOpenAddUserForm}
+              isError={setIsError}
+              isAddedUser={setIsAdded}
+              message={setMessage}
+            />
           )}
         </motion.div>
       </AnimatePresence>

@@ -53,12 +53,12 @@ const useAuth = () => {
 
   // Обновляем токен доступа
   const updateToken = useCallback((token: any) => {
-    setAccessToken(token);
-
     const data = JSON.parse(localStorage.getItem(storageName) || '{}');
     data.access_token = token;
 
     localStorage.setItem(storageName, JSON.stringify(data));
+
+    setAccessToken(token);
   }, []);
 
   useEffect(() => {

@@ -29,10 +29,17 @@ export interface IUsersProps {
 }
 
 export interface IChangeUserProps {
+  user_id: number;
   FIO: string;
   email: string;
+  access_lvl: number;
   access_name: string;
-  objects: Array<[]>;
+  password: string;
+}
+
+export interface IObjectsDataProps {
+  user_id: number;
+  items: number[];
 }
 
 export interface ITableData {

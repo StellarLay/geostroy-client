@@ -39,11 +39,11 @@ const AddDataModal = (props: any) => {
   const addHandler = async (e: any) => {
     e.preventDefault();
 
-    const formatDate = new Date(formData.device_time);
-    formatDate.setHours(formatDate.getHours() + 3);
-    const mysqlDate = formatDate.toISOString().slice(0, 19).replace('T', ' ');
-
-    formData.device_time = mysqlDate;
+    // Приводим дату к нужному mysql формату
+    formData.device_time = formData.device_time
+      .split(' ')
+      .map((part) => part.split('-').reverse().join('/'))
+      .join(' ');
 
     try {
       await request(`${config.URL}/api/addSensorData/`, 'POST', {
