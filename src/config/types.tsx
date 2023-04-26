@@ -8,6 +8,11 @@ export interface IPiezometersProps {
   name: string;
 }
 
+export interface ICreatePiezometersProps {
+  name: string;
+  user_id: number;
+}
+
 export interface ISensorsProps {
   id: number;
   name: string;

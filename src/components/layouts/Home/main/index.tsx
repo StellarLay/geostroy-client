@@ -35,6 +35,8 @@ const Main = (props: any) => {
         <PiezometersBlock
           activeObject={activeObject}
           updateActivePiezometer={updateActivePiezometer}
+          isAddedPiezo={props.isAddedPiezo}
+          isAddedPiezoMsg={props.isAddedPiezoMsg}
         />
         <FontAwesomeIcon icon={faArrowRight} className='arrow-right-icon' />
       </div>

@@ -14,6 +14,8 @@ function App() {
   const [messageBoxText, setMessageBoxText] = useState('');
   const [isOpenMessageBox, setIsOpenMessageBox] = useState(false);
 
+  const [isAddedPiezo, setIsAddedPiezo] = useState(false);
+
   // Прокидываем пропсы для модального окна "Добавить показание" полей (sensor_id и piezo_id)
   const getSensorIdModal = useCallback(
     (value: IDataAddModal[], isOpen: boolean) => {
@@ -28,15 +30,16 @@ function App() {
     if (isSuccessAddData) {
       setMessageBoxText('Показание успешно добавлено');
       setIsOpenMessageBox(true);
-
-      // Закрываем модалку через 3 секунды
-      const timer = setTimeout(() => {
-        setIsSuccessAddData(false);
-        setIsOpenMessageBox(false);
-      }, 3000);
-      return () => clearTimeout(timer);
     }
-  }, [isSuccessAddData]);
+
+    // Закрываем модалку через 3 секунды
+    const timer = setTimeout(() => {
+      setIsSuccessAddData(false);
+      setIsOpenMessageBox(false);
+      setIsAddedPiezo(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [isSuccessAddData, isAddedPiezo]);
 
   return (
     <div className='app-main'>
@@ -44,6 +47,8 @@ function App() {
       <Home
         getSensorIdModal={getSensorIdModal}
         isSuccessAddData={isSuccessAddData}
+        isAddedPiezo={setIsAddedPiezo}
+        isAddedPiezoMsg={setMessageBoxText}
       />
       {isOpenAddModal && (
         <AddDataModal
@@ -52,7 +57,9 @@ function App() {
           isSuccess={setIsSuccessAddData}
         />
       )}
-      {isOpenMessageBox && <MessageBox message={messageBoxText} />}
+      {(isOpenMessageBox || isAddedPiezo) && (
+        <MessageBox message={messageBoxText} color={isAddedPiezo && 'error'} />
+      )}
     </div>
   );
 }

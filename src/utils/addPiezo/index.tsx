@@ -6,25 +6,15 @@ import InputMask from 'react-input-mask';
 
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ISensorsData } from '../../config/types';
+import { ICreatePiezometersProps } from '../../config/types';
 
 import useHttp from '../../hooks/http.hook';
 import config from '../../config/main.json';
 
-const AddDataModal = (props: any) => {
-  const [formData, setFormData] = useState<ISensorsData>({
-    sensor_id: props.dataAddModal.sensor_id,
-    piezometer_id: props.dataAddModal.piezo_id,
-    adc_lvl: null,
-    lvl_m: null,
-    lvl_m_corr: null,
-    battery_voltage: null,
-    battery_charge: null,
-    error_code: 0,
-    device_time: '',
-    message_arr_time: new Date().toISOString().slice(0, 10),
-    working_mode: 1,
-    sleep_time: '',
+const AddPiezoModal = (props: any) => {
+  const [formData, setFormData] = useState<ICreatePiezometersProps>({
+    name: '',
+    user_id: 0,
   });
 
   //const [isLogin, setIsLogin] = useState<boolean>(false);
@@ -38,12 +28,6 @@ const AddDataModal = (props: any) => {
   // POST query add data
   const addHandler = async (e: any) => {
     e.preventDefault();
-
-    // Приводим дату к нужному mysql формату
-    formData.device_time = formData.device_time
-      .split(' ')
-      .map((part) => part.split('-').reverse().join('/'))
-      .join(' ');
 
     try {
       await request(`${config.URL}/api/addSensorData/`, 'POST', {
@@ -64,11 +48,11 @@ const AddDataModal = (props: any) => {
         className='close-icon'
         onClick={() => props.isOpen(false)}
       />
-      <h1>Добавить показание</h1>
+      <h1>Добавление скважины</h1>
       <form className='add-modal-form' onSubmit={(e) => addHandler(e)}>
         <div className='add-modal__row'>
           <div className='add-modal__input-block'>
-            <label>Код пъезометра</label>
+            <label>Наименование</label>
             <input
               type='text'
               name='piezometer_id'
@@ -83,16 +67,6 @@ const AddDataModal = (props: any) => {
               name='sensor_id'
               disabled
               value={props.dataAddModal.sensor_id}
-            />
-          </div>
-          <div className='add-modal__input-block'>
-            <label>Дата прихода</label>
-            <input
-              type='text'
-              name='message_arr_time'
-              value={formData.message_arr_time}
-              onChange={(e) => changeHandler(e)}
-              disabled
             />
           </div>
           <div className='add-modal__input-block'>
@@ -208,4 +182,4 @@ const AddDataModal = (props: any) => {
   );
 };
 
-export default AddDataModal;
+export default AddPiezoModal;

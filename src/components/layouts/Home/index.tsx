@@ -22,6 +22,8 @@ const Home = (props: any) => {
         <Main
           getSensorIdModal={props.getSensorIdModal}
           isSuccessAddData={props.isSuccessAddData}
+          isAddedPiezo={props.isAddedPiezo}
+          isAddedPiezoMsg={props.isAddedPiezoMsg}
         />
         <Footer />
       </motion.div>
