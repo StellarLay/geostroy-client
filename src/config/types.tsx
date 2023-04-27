@@ -100,10 +100,11 @@ export const customStylesSelect = {
   control: (base: any) => ({
     ...base,
     width: '100%',
-    border: '1px solid rgba(0, 0, 0, 0.08);',
+    border: '2px solid #3f58882d;',
     boxShadow: 'none',
+    borderRadius: '5px',
     cursor: 'pointer',
-    minHeight: '45px',
+    minHeight: '48px',
     height: '45px',
   }),
   valueContainer: (provided: any, state: any) => ({
@@ -134,8 +135,9 @@ export const customStylesSelectFilter = {
   control: (base: any) => ({
     ...base,
     width: 150,
-    border: '1px solid rgba(0, 0, 0, 0.08);',
-    minHeight: '40px',
+    border: '2px solid #3f58882d;',
+    borderRadius: '8px',
+    minHeight: '44px',
     height: '40px',
     boxShadow: 'none',
     cursor: 'pointer',
@@ -169,7 +171,7 @@ export const customStylesMultiSelect = {
   control: (base: any) => ({
     ...base,
     width: '100%',
-    border: '1px solid rgba(0, 0, 0, 0.08);',
+    border: '2px solid #3f58882d;',
     boxShadow: 'none',
     cursor: 'pointer',
     minHeight: '45px',

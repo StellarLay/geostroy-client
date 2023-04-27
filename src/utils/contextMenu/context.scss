@@ -36,3 +36,8 @@
 .users-container .context-menu {
   right: 30px;
 }
+
+.locked {
+  pointer-events: none;
+  opacity: 0.4;
+}

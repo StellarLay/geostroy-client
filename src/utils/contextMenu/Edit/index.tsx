@@ -72,8 +72,8 @@ const Edit = (props: any) => {
         style={styles}
         ref={modalRef}
       >
-        <span className='edit-block__item edit-block__change'>
-          Редактировать
+        <span className='edit-block__item edit-block__change locked'>
+          Редактировать (скоро)
         </span>
         <span
           className='edit-block__item edit-block__remove'

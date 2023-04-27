@@ -44,10 +44,16 @@ const ControlPanel = (props: any) => {
     // Названия столбцов
     let headers: any = [
       { label: 'Наименование датчика', key: 'sensor_name' },
+      { label: 'Уровень по АЦП', key: 'adc_lvl' },
       { label: 'Уровень', key: 'lvl_m' },
       { label: 'Уровень + коррекция', key: 'lvl_m_corr' },
+      { label: 'Напряжение на аккумуляторе', key: 'battery_voltage' },
+      { label: 'Заряд аккумулятора в %', key: 'battery_charge' },
+      { label: 'Код ошибки', key: 'error_code' },
       { label: 'Время по устройству', key: 'device_time' },
       { label: 'Время прихода сообщения', key: 'message_arr_time' },
+      { label: 'Режим работы', key: 'working_mode' },
+      { label: 'Время сна', key: 'sleep_time' },
     ];
 
     // Массив данных
@@ -56,10 +62,16 @@ const ControlPanel = (props: any) => {
     sensorData.forEach((item: any) => {
       newExcelArr.push({
         sensor_name: item.sensor_name,
+        adc_lvl: item.adc_lvl,
         lvl_m: item.lvl_m,
         lvl_m_corr: item.lvl_m_corr,
+        battery_voltage: item.battery_voltage,
+        battery_charge: item.battery_charge,
+        error_code: item.error_code,
         device_time: item.device_time,
         message_arr_time: item.message_arr_time,
+        working_mode: item.working_mode,
+        sleep_time: item.sleep_time,
       });
 
       setHeadersForExcel(headers);

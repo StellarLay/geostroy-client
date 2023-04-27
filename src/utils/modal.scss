@@ -74,7 +74,8 @@ input[type='text']:disabled {
           border-radius: 5px;
           border: none;
           text-indent: 5px;
-          border: 1px solid #3f588814;
+          border: 2px solid #3f58882d;
+          background-color: #fefefe;
           // background-color: #f7f7f7;
           transition: 0.1s linear;
         }
@@ -99,7 +100,7 @@ input[type='text']:disabled {
         }
 
         input:focus {
-          border: 1px solid #3f5888;
+          border: 2px solid #3f5888;
         }
       }
 

@@ -7,12 +7,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSearch,
-  faEllipsisVertical,
+  faSquarePen,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 
 // Include components
 import MessageBox from '../../utils/modals/messageBox';
-import EditUser from '../../utils/contextMenu/EditUser';
 
 // Include custom hooks
 import useHttp from '../../hooks/http.hook';
@@ -39,9 +39,6 @@ const UsersPage = () => {
   const [isOpenForm, setIsOpenForm] = useState(false);
   const [isOpenAddUserForm, setIsOpenAddUserForm] = useState(false);
 
-  // States for context menu
-  const [posYObject, setPosYObject] = useState(null);
-  const [isEdit, setIsEdit] = useState(false);
   const [isRemove, setIsRemove] = useState(false);
   const [isUpdated, setIsUpdated] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
@@ -100,14 +97,10 @@ const UsersPage = () => {
     }
   };
 
-  const selectActiveUser = (e: any, id: number) => {
-    const filter = users.filter((user) => user.id === id);
-    setActiveUser(filter[0]);
-
-    // Получаем высоту выбранного объекта
-    let getHeight = e.clientY;
-    setPosYObject(getHeight);
-  };
+  // const selectActiveUser = (e: any, id: number) => {
+  //   const filter = users.filter((user) => user.id === id);
+  //   setActiveUser(filter[0]);
+  // };
 
   // Закрываем модалку через 3 секунды
   useEffect(() => {
@@ -128,13 +121,39 @@ const UsersPage = () => {
       setIsUpdated(false);
       setIsAdded(false);
       setIsError(false);
-    }, 3000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, [isRemove, isUpdated, isAdded, isError, activeUser]);
 
   // Click add user btn
   const addUserHandler = () => {
     setIsOpenAddUserForm(true);
+  };
+
+  // Remove event
+  const removeUser = (user: any) => {
+    setActiveUser(user);
+
+    const fetchData = async () => {
+      console.log(auth.accessToken);
+      try {
+        const url = `${config.URL}/api/removeUser/${user.id}`;
+        await request(url, 'DELETE', null);
+
+        // Активируем статус "Удалено", чтобы в компоненте objectsBlock выполнить перерисовку объектов
+        setIsRemove(true);
+      } catch (err: any) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  };
+
+  // Click change user
+  const changeUserHandler = (user: any) => {
+    setActiveUser(user);
+    setIsOpenForm(true);
   };
 
   return (
@@ -176,9 +195,14 @@ const UsersPage = () => {
                 </div>
               ))}
               <FontAwesomeIcon
-                icon={faEllipsisVertical}
-                className='dots-vertical-icon dots-table-hidden'
-                title='Настроить'
+                icon={faSquarePen}
+                className='edit-icon dots-table-hidden'
+                title='Изменить'
+              />
+              <FontAwesomeIcon
+                icon={faTrash}
+                className='remove-icon dots-table-hidden'
+                title='Изменить'
               />
             </div>
             {Object.keys(filteredUsers).length !== 0 ? (
@@ -190,7 +214,6 @@ const UsersPage = () => {
                   exit={{ y: -10, opacity: 0 }}
                   transition={{ duration: 0.1 }}
                   className='data-table__row'
-                  onClick={(e) => selectActiveUser(e, user.id)}
                 >
                   <div className='data-table__item'>
                     <span className='data-table__text'>{user.FIO}</span>
@@ -202,10 +225,16 @@ const UsersPage = () => {
                     <span className='data-table__text'>{user.access_name}</span>
                   </div>
                   <FontAwesomeIcon
-                    icon={faEllipsisVertical}
-                    className='dots-vertical-icon'
+                    icon={faSquarePen}
+                    className='edit-icon'
                     title='Изменить'
-                    onClick={() => setIsEdit(true)}
+                    onClick={() => changeUserHandler(user)}
+                  />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className='remove-icon'
+                    title='Изменить'
+                    onClick={() => removeUser(user)}
                   />
                 </motion.div>
               ))
@@ -221,15 +250,6 @@ const UsersPage = () => {
               </motion.div>
             )}
           </div>
-          {isEdit && (
-            <EditUser
-              height={posYObject}
-              isEdit={setIsEdit}
-              isRemove={setIsRemove}
-              isOpen={setIsOpenForm}
-              activeUser={activeUser}
-            />
-          )}
           {(isRemove || isUpdated || isAdded || isError) && (
             <MessageBox message={message} color={isError && 'error'} />
           )}

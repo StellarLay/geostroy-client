@@ -22,7 +22,7 @@
       display: flex;
       align-items: center;
       border-radius: 10px;
-      background-color: rgba(0, 0, 0, 0.03);
+      background-color: rgba(0, 0, 0, 0.05);
       border: 2px solid transparent;
 
       .search-icon {
@@ -66,8 +66,10 @@
     }
 
     .table-block {
+      display: flex;
+      flex-direction: column;
       width: 170px;
-      height: 580px;
+      height: 80vh;
       padding: 20px;
       box-shadow: 0px 0px 23px -8px rgba(0, 125, 153, 0.43);
       border-radius: 3px;
@@ -132,7 +134,7 @@
 
     .table-items {
       margin-top: 20px;
-      // padding-right: 10px;
+      padding-right: 10px;
       display: flex;
       flex-direction: column;
       height: 90%;
@@ -233,7 +235,7 @@
             height: 40px;
             padding: 0 8px;
             border-radius: 8px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            border: 2px solid #3f58882d;
           }
         }
 
@@ -281,7 +283,7 @@
             align-items: center;
             height: 45px;
             padding: 0 20px;
-            box-shadow: 0px 0px 15px -4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.4);
             border-radius: 8px;
 
             .status-panel__item:not(:last-child) {

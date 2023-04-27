@@ -11,14 +11,13 @@ import config from '../../../config/main.json';
 
 import { AuthContext } from '../../../context/authContext';
 
-const EditUser = (props: any) => {
+const EditPiezo = (props: any) => {
   const auth = useContext(AuthContext);
+
   const { request } = useHttp();
 
-  const { activeUser, isOpen } = props;
-
   const styles = {
-    top: props.height + 20,
+    top: props.height - 60,
   };
 
   // Close context menu, when onclick outside START
@@ -42,11 +41,11 @@ const EditUser = (props: any) => {
   // Close context menu, when onclick outside END
 
   // Remove event
-  const removeUser = () => {
+  const removePiezo = () => {
     const fetchData = async () => {
       console.log(auth.accessToken);
       try {
-        const url = `${config.URL}/api/removeUser/${activeUser.id}`;
+        const url = `${config.URL}/api/removePiezo/${props.activePiezo.id}`;
         await request(url, 'DELETE', null);
 
         // Активируем статус "Удалено", чтобы в компоненте objectsBlock выполнить перерисовку объектов
@@ -62,12 +61,6 @@ const EditUser = (props: any) => {
     fetchData();
   };
 
-  // Click change user
-  const changeUserHandler = () => {
-    isOpen(true);
-    props.isEdit(false);
-  };
-
   return (
     <AnimatePresence>
       <motion.div
@@ -75,19 +68,16 @@ const EditUser = (props: any) => {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -10, opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className='context-menu edit-block'
+        className='context-menu edit-block edit-piezo-block'
         style={styles}
         ref={modalRef}
       >
-        <span
-          className='edit-block__item edit-block__change'
-          onClick={() => changeUserHandler()}
-        >
-          Редактировать
+        <span className='edit-block__item edit-block__change locked'>
+          Редактировать (скоро)
         </span>
         <span
           className='edit-block__item edit-block__remove'
-          onClick={() => removeUser()}
+          onClick={() => removePiezo()}
         >
           Удалить
         </span>
@@ -96,4 +86,4 @@ const EditUser = (props: any) => {
   );
 };
 
-export default EditUser;
+export default EditPiezo;

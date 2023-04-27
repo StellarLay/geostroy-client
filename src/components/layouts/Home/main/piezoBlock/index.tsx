@@ -14,6 +14,8 @@ import config from '../../../../../config/main.json';
 import { IPiezometersProps } from '../../../../../config/types';
 
 import { AuthContext } from '../../../../../context/authContext';
+import EditPiezo from '../../../../../utils/contextMenu/EditPiezo';
+import MessageBox from '../../../../../utils/modals/messageBox';
 
 const activeClass = 'table-item__active';
 const divVariants: Variants = {
@@ -53,6 +55,11 @@ const PiezometersBlock = (props: any) => {
   const [toggle, setToggle] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
 
+  const [posYObject, setPosYObject] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
+  const [isRemove, setIsRemove] = useState(false);
+  const [message, setMessage] = useState('');
+
   // Skip first render with useRef
   const isFirstRun = useRef(true);
   useEffect(() => {
@@ -73,12 +80,16 @@ const PiezometersBlock = (props: any) => {
     };
 
     fetchData();
-  }, [request, activeObject, isAdd]);
+  }, [request, activeObject, isAdd, isRemove]);
 
   const selectActivePiezometer = (e: any, id: number) => {
     const filter = piezometers.filter((item) => item.id === id);
     updateActivePiezometer(filter[0]);
     setActivePiezo(filter[0]);
+
+    // Получаем высоту выбранного объекта
+    let getHeight = e.clientY;
+    setPosYObject(getHeight);
   };
 
   // Событие поля piezoname
@@ -119,6 +130,17 @@ const PiezometersBlock = (props: any) => {
 
     fetchCreatePiezo();
   };
+
+  // Закрываем модалку через 3 секунды
+  useEffect(() => {
+    if (isRemove) {
+      setMessage(`Скважина <${activePiezo!.name}> успешно удалена.`);
+      const timer = setTimeout(() => {
+        setIsRemove(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isRemove, activePiezo]);
 
   return (
     <AnimatePresence>
@@ -171,6 +193,7 @@ const PiezometersBlock = (props: any) => {
                   icon={faEllipsisVertical}
                   className='dots-vertical-icon'
                   title='Параметры'
+                  onClick={() => setIsEdit(true)}
                 />
               </div>
             ))
@@ -183,6 +206,15 @@ const PiezometersBlock = (props: any) => {
               )}
             </div>
           )}
+          {isEdit && (
+            <EditPiezo
+              height={posYObject}
+              isEdit={setIsEdit}
+              isRemove={setIsRemove}
+              activePiezo={activePiezo}
+            />
+          )}
+          {isRemove && <MessageBox message={message} />}
         </motion.div>
       </div>
     </AnimatePresence>
