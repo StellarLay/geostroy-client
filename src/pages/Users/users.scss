@@ -11,9 +11,11 @@
     justify-content: space-between;
     padding: 0 10px;
 
-    h2 {
-      font-size: 1.6em;
-      color: #000000d8;
+    .users-container__head-block__title {
+      h2 {
+        font-size: 1.6em;
+        color: #000000d8;
+      }
     }
 
     .users-container__head-block__search {

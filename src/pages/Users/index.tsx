@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
 import SideBar from '../../components/layouts/sidebar';
+
 import './users.scss';
+import '../media.scss';
 
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -9,6 +11,7 @@ import {
   faSearch,
   faSquarePen,
   faTrash,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 
 // Include components
@@ -31,6 +34,8 @@ const UsersPage = () => {
 
   const { request } = useHttp();
   const { createToken } = useCreateToken();
+
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const [users, setUsers] = useState<IUsersProps[]>([]);
   const [activeUser, setActiveUser] = useState<IUsersProps>();
@@ -158,7 +163,7 @@ const UsersPage = () => {
 
   return (
     <div className='app-main'>
-      <SideBar />
+      <SideBar isActive={showSidebar} />
       <AnimatePresence>
         <motion.div
           initial={{ y: 10, opacity: 0 }}
@@ -168,7 +173,14 @@ const UsersPage = () => {
           className='users-container'
         >
           <div className='users-container__head-block'>
-            <h2>Пользователи</h2>
+            <div className='users-container__head-block__title'>
+              <h2>Пользователи</h2>
+              <FontAwesomeIcon
+                icon={faBars}
+                className='menu-burger-icon'
+                onClick={() => setShowSidebar(showSidebar ? false : true)}
+              />
+            </div>
             <div className='users-container__head-block__search'>
               <FontAwesomeIcon icon={faSearch} className='search-icon' />
               <input

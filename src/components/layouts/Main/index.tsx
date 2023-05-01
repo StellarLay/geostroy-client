@@ -8,6 +8,8 @@ import { IDataAddModal } from '../../../config/types';
 import MessageBox from '../../../utils/modals/messageBox';
 
 function App() {
+  const [showSidebar, setShowSidebar] = useState(false);
+
   const [dataAddModal, setDataAddModal] = useState<IDataAddModal[]>([]);
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
   const [isSuccessAddData, setIsSuccessAddData] = useState(false);
@@ -43,12 +45,14 @@ function App() {
 
   return (
     <div className='app-main'>
-      <SideBar />
+      <SideBar isActive={showSidebar} />
       <Home
         getSensorIdModal={getSensorIdModal}
         isSuccessAddData={isSuccessAddData}
         isAddedPiezo={setIsAddedPiezo}
         isAddedPiezoMsg={setMessageBoxText}
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
       />
       {isOpenAddModal && (
         <AddDataModal

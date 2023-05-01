@@ -4,9 +4,11 @@ import Profile from './profile';
 
 import './sidebar.scss';
 
-const SideBar = () => {
+const SideBar = (props: any) => {
   return (
-    <div className='sidebar-container'>
+    <div
+      className={`sidebar-container ${props.isActive ? 'show-sidebar' : ''}`}
+    >
       <div className='sidebar-block'>
         <Profile />
         <Menu />

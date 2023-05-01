@@ -98,3 +98,30 @@ input:-webkit-autofill:active {
 .hide {
   visibility: hidden;
 }
+
+.show-sidebar {
+  transform: translateX(0) !important;
+}
+
+/* Burger menu START */
+.home-block {
+  .menu-burger-icon {
+    z-index: 1111111111111;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-size: 25px;
+  }
+}
+
+.menu-burger-icon {
+  cursor: pointer;
+  font-size: 25px;
+}
+
+@media (min-width: 1400px) {
+  .menu-burger-icon {
+    display: none;
+  }
+}
+/* Burger menu END */

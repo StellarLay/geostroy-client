@@ -1,0 +1,123 @@
+@media (max-width: 580px) {
+  /* User page START */
+  .users-container {
+    width: 100%;
+    padding: 30px 10px;
+
+    .users-container__head-block {
+      flex-direction: column;
+
+      .users-container__head-block__title {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .users-container__head-block__search {
+        width: 100%;
+        margin: 20px 0;
+      }
+    }
+
+    .data-table {
+      .data-table__row {
+        width: 800px;
+      }
+    }
+  }
+
+  .users-container .add-modal {
+    width: 95%;
+    padding: 20px;
+
+    .change-user-form.add-modal-form {
+      overflow-y: hidden;
+
+      .add-modal__row {
+        .add-modal__input-block {
+          width: 100%;
+
+          input {
+            width: auto;
+          }
+        }
+        .add-modal__input-block:has(input[name='FIO']) {
+          width: 100%;
+        }
+      }
+    }
+
+    .add-modal__btn-block {
+      justify-content: center;
+    }
+  }
+  /* User page END */
+}
+
+@media (min-width: 600px) and (max-width: 1024px) {
+  /* User page START */
+  .users-container {
+    width: 100%;
+    padding: 30px 10px;
+
+    .users-container__head-block {
+      flex-direction: column;
+
+      .users-container__head-block__title {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .users-container__head-block__search {
+        width: 100%;
+        margin: 20px 0;
+      }
+    }
+
+    .data-table {
+      .data-table__row {
+        width: 850px;
+      }
+    }
+  }
+
+  .users-container .add-modal {
+    width: 95%;
+    padding: 20px;
+
+    .change-user-form.add-modal-form {
+      overflow-y: hidden;
+
+      .add-modal__row {
+        .add-modal__input-block {
+          width: 100%;
+
+          input {
+            width: auto;
+          }
+        }
+        .add-modal__input-block:has(input[name='FIO']) {
+          width: 100%;
+        }
+      }
+    }
+
+    .add-modal__btn-block {
+      justify-content: center;
+    }
+  }
+  /* User page END */
+}
+
+@media (min-width: 850px) {
+  .users-container {
+    .data-table {
+      .data-table__row {
+        width: 100%;
+      }
+    }
+  }
+}
