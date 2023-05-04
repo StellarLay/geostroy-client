@@ -3,15 +3,33 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { ITableData } from '../../../../../../../config/types';
+import { ITableData, ISensorsData } from '../../../../../../../config/types';
+import ChangeDataModal from '../../../../../../../utils/changeData';
+import MessageBox from '../../../../../../../utils/modals/messageBox';
+
+// Include hooks
+import useHttp from '../../../../../../../hooks/http.hook';
+
+// Config
+import config from '../../../../../../../config/main.json';
 
 const DataTable = (props: any) => {
   const [tableData, setTableData] = useState<ITableData[]>([]);
 
+  const [activeData, setActiveData] = useState<ISensorsData>();
+  const [isOpenForm, setIsOpenForm] = useState(false);
+
+  const [isRemove, setIsRemove] = useState(false);
+  const [isUpdated, setIsUpdated] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState('');
+
   // Деструктуризация пропсов
   const { sensorData, filterData } = props;
+
+  const { request } = useHttp();
 
   // Заголовки таблицы
   const tableHeaders = [
@@ -79,6 +97,79 @@ const DataTable = (props: any) => {
     }
   }, [filterData, sensorData]);
 
+  // Click change data
+  const changeDataHandler = (item: any) => {
+    let data = Object.create(item);
+
+    // Приводим message_arr_time к string формату
+    const timestamp_message_arr_time = new Date(item.message_arr_time);
+    const formatted_message_arr_time =
+      timestamp_message_arr_time.toLocaleDateString('en-GB', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: 'numeric',
+        minute: 'numeric',
+      });
+
+    //Приводим device_time к string формату
+    const timestamp_device_time = new Date(item.device_time);
+    const formatted_device_time = timestamp_device_time.toLocaleDateString(
+      'en-GB',
+      {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: 'numeric',
+        minute: 'numeric',
+      }
+    );
+
+    data.message_arr_time = formatted_message_arr_time;
+    data.device_time = formatted_device_time;
+
+    setActiveData(data);
+    setIsOpenForm(true);
+  };
+
+  // Remove sensor event
+  const removeSensor = (id: number) => {
+    const fetchData = async () => {
+      try {
+        const url = `${config.URL}/api/removeSensor/${id}`;
+        await request(url, 'DELETE', null);
+
+        // Активируем статус "Удалено", чтобы в компоненте dataBlock выполнить перерисовку показаний
+        props.isRemovedRow(true);
+
+        // Чтобы сработал messageBox
+        setIsRemove(true);
+      } catch (err: any) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  };
+
+  // Обработчик модального окна
+  useEffect(() => {
+    if (isRemove) {
+      setMessage(`Показание удалено.`);
+    }
+
+    if (isUpdated) {
+      setMessage(`Показание успешно было изменено.`);
+    }
+
+    const timer = setTimeout(() => {
+      setIsRemove(false);
+      setIsUpdated(false);
+      setIsError(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [isRemove, isUpdated, isError]);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -96,9 +187,12 @@ const DataTable = (props: any) => {
             </div>
           ))}
           <FontAwesomeIcon
-            icon={faEllipsisVertical}
-            className='dots-vertical-icon dots-table-hidden'
-            title='Настроить'
+            icon={faSquarePen}
+            className='edit-icon dots-table-hidden'
+          />
+          <FontAwesomeIcon
+            icon={faTrash}
+            className='remove-icon dots-table-hidden'
           />
         </div>
         {tableData &&
@@ -122,25 +216,51 @@ const DataTable = (props: any) => {
               </div>
               <div className='data-table__item'>
                 <span className='data-table__text'>
-                  {new Date(item.device_time).toLocaleDateString() +
-                    ', ' +
-                    new Date(item.device_time).toLocaleTimeString()}
+                  {new Date(item.device_time).toLocaleDateString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })}
                 </span>
               </div>
               <div className='data-table__item'>
                 <span className='data-table__text'>
-                  {new Date(item.message_arr_time).toLocaleDateString() +
-                    ', ' +
-                    new Date(item.message_arr_time).toLocaleTimeString()}
+                  {new Date(item.message_arr_time).toLocaleDateString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })}
                 </span>
               </div>
               <FontAwesomeIcon
-                icon={faEllipsisVertical}
-                className='dots-vertical-icon'
-                title='Настроить'
+                icon={faSquarePen}
+                className='edit-icon'
+                title='Изменить'
+                onClick={() => changeDataHandler(item)}
+              />
+              <FontAwesomeIcon
+                icon={faTrash}
+                className='remove-icon'
+                title='Удалить'
+                onClick={() => removeSensor(item.id)}
               />
             </motion.div>
           ))}
+        {(isRemove || isUpdated || isError) && (
+          <MessageBox message={message} color={isError && 'error'} />
+        )}
+        {isOpenForm && (
+          <ChangeDataModal
+            isOpen={setIsOpenForm}
+            activeData={activeData}
+            isUpdatedData={setIsUpdated}
+            isUpdatedRow={props.isUpdatedRow}
+          />
+        )}
       </motion.div>
     </AnimatePresence>
   );

@@ -214,7 +214,7 @@ const UsersPage = () => {
               <FontAwesomeIcon
                 icon={faTrash}
                 className='remove-icon dots-table-hidden'
-                title='Изменить'
+                title='Удалить'
               />
             </div>
             {Object.keys(filteredUsers).length !== 0 ? (
@@ -245,7 +245,7 @@ const UsersPage = () => {
                   <FontAwesomeIcon
                     icon={faTrash}
                     className='remove-icon'
-                    title='Изменить'
+                    title='Удалить'
                     onClick={() => removeUser(user)}
                   />
                 </motion.div>

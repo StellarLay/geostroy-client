@@ -21,6 +21,8 @@ const DataBlock = (props: any) => {
 
   const [sensor, setSensor] = useState<ISensorsProps[]>([]);
   const [isUpdateData, setIsUpdateData] = useState(false);
+  const [isUpdatedRow, setIsUpdatedRow] = useState(false);
+  const [isRemovedRow, setIsRemovedRow] = useState(false);
   const [filterData, setFilterData] = useState({});
 
   const { request } = useHttp();
@@ -54,11 +56,13 @@ const DataBlock = (props: any) => {
         const data = await request(url, 'GET', null, authorization);
 
         setSensor(data);
-        console.log(activePiezo.length);
       } catch (e) {
         console.log(e);
       }
     };
+
+    setIsUpdatedRow(false);
+    setIsRemovedRow(false);
 
     if (activePiezo.length !== 0) {
       fetchData();
@@ -67,6 +71,8 @@ const DataBlock = (props: any) => {
     request,
     activePiezo,
     isUpdateData,
+    isUpdatedRow,
+    isRemovedRow,
     getSensorIdModal,
     isSuccessAddData,
     auth.accessToken,
@@ -80,6 +86,8 @@ const DataBlock = (props: any) => {
           sensorData={sensor}
           activePiezo={activePiezo}
           updateData={updateData}
+          isUpdatedRow={setIsUpdatedRow}
+          isRemovedRow={setIsRemovedRow}
           getSensorIdModal={getSensorIdModal}
           filterData={filterData}
         />

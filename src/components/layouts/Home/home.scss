@@ -394,6 +394,42 @@
               cursor: pointer;
               font-size: 1.2em;
             }
+
+            .edit-icon,
+            .remove-icon {
+              font-size: 20px;
+            }
+
+            .edit-icon {
+              font-size: 22px;
+              cursor: pointer;
+              margin-right: 10px;
+
+              path {
+                fill: #3f5888;
+                transition: 0.1s linear;
+              }
+            }
+
+            .edit-icon:hover {
+              path {
+                fill: #2a4473;
+              }
+            }
+
+            .remove-icon {
+              cursor: pointer;
+              path {
+                fill: rgb(201, 30, 30);
+                transition: 0.1s linear;
+              }
+            }
+
+            .remove-icon:hover {
+              path {
+                fill: rgb(160, 24, 24);
+              }
+            }
           }
 
           .data-table__row:not(:last-child) {
@@ -406,7 +442,7 @@
 
           .data-table__th-item,
           .data-table__item {
-            width: 30%;
+            width: 35%;
           }
 
           .data-table__item:first-child,

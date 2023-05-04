@@ -64,7 +64,12 @@ const ResultGrid = (props: any) => {
         isChangedBindStatus={isClickBindBtn}
         getSensorIdModal={getSensorIdModal}
       />
-      <DataTable sensorData={sensorData} filterData={filterData} />
+      <DataTable
+        sensorData={sensorData}
+        filterData={filterData}
+        isUpdatedRow={props.isUpdatedRow}
+        isRemovedRow={props.isRemovedRow}
+      />
     </div>
   );
 };
