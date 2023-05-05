@@ -33,6 +33,23 @@ export interface IUsersProps {
   access_name: string;
 }
 
+export interface IPermissionsProps {
+  id: number;
+  email: string;
+  object_id: number;
+  object_name: string;
+  piezo_id: number;
+  piezo_name: string;
+}
+
+export interface IOpsProps {
+  id: number;
+  object_id: number;
+  piezometer_id: number;
+  sensor_id: number;
+  name: string;
+}
+
 export interface IChangeUserProps {
   user_id: number;
   FIO: string;
@@ -208,5 +225,39 @@ export const customStylesMultiSelect = {
     fill: '#fffffff0',
     transition: '.1s linear',
     ':hover': { background: '#c73d3d' },
+  }),
+};
+
+// Стили для select на странице /settings/
+export const customStylSelectSettingsUser = {
+  option: (provided: any, state: any) => ({
+    ...provided,
+    padding: 12,
+    width: '300px',
+    color: state.isFocused ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: state.isFocused ? '#3f5888' : null,
+  }),
+  control: (base: any) => ({
+    ...base,
+    width: '300px',
+    border: '2px solid #3f58882d;',
+    boxShadow: 'none',
+    cursor: 'pointer',
+    minHeight: '40px',
+    padding: '0',
+  }),
+  valueContainer: (provided: any, state: any) => ({
+    ...provided,
+    minHeight: '40px',
+    padding: '0 8px',
+  }),
+  input: (provided: any, state: any) => ({
+    ...provided,
+    margin: '0',
+    padding: '0',
+  }),
+  indicatorsContainer: (provided: any, state: any) => ({
+    ...provided,
+    minHeight: '40px',
   }),
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { CSVLink } from 'react-csv';
 
 import useHttp from '../../../../../../../hooks/http.hook';
@@ -14,9 +14,13 @@ import {
   ISensorsProps,
 } from '../../../../../../../config/types';
 
+import { AuthContext } from '../../../../../../../context/authContext';
+
 import Select from 'react-select';
 
 const ControlPanel = (props: any) => {
+  const auth = useContext(AuthContext);
+
   const [headersForExcel, setHeadersForExcel] = useState([]);
   const [dataForExcel, setDataForExcel] = useState([]);
   const [piezoData, setPiezoData] = useState<IPiezoDataProps[]>([]);
@@ -60,6 +64,30 @@ const ControlPanel = (props: any) => {
     let newExcelArr: any = [];
 
     sensorData.forEach((item: any) => {
+      // Приводим message_arr_time к string формату
+      const timestamp_message_arr_time = new Date(item.message_arr_time);
+      const formatted_message_arr_time =
+        timestamp_message_arr_time.toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: 'numeric',
+          minute: 'numeric',
+        });
+
+      //Приводим device_time к string формату
+      const timestamp_device_time = new Date(item.device_time);
+      const formatted_device_time = timestamp_device_time.toLocaleDateString(
+        'en-GB',
+        {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: 'numeric',
+          minute: 'numeric',
+        }
+      );
+
       newExcelArr.push({
         sensor_name: item.sensor_name,
         adc_lvl: item.adc_lvl,
@@ -68,8 +96,8 @@ const ControlPanel = (props: any) => {
         battery_voltage: item.battery_voltage,
         battery_charge: item.battery_charge,
         error_code: item.error_code,
-        device_time: item.device_time,
-        message_arr_time: item.message_arr_time,
+        device_time: formatted_device_time,
+        message_arr_time: formatted_message_arr_time,
         working_mode: item.working_mode,
         sleep_time: item.sleep_time,
       });
@@ -192,36 +220,40 @@ const ControlPanel = (props: any) => {
             <span className='info-sensor__title'>Привязанный датчик</span>
             <span className='info-sensor__name'>{sensorName[0].name}</span>
             <div className='info-sensor__status'></div>
-            <span
-              className='info-sensor__unbind-sensor'
-              onClick={() => unbindSensorClick()}
-            >
-              Отвязать датчик
-            </span>
-          </div>
-        ) : (
-          <div className='info-sensor info-sensor-not'>
-            <span className='info-sensor__title'>
-              Датчик не прикреплён.
-              {sensorData.length && (
-                <span> Предыдущий: {sensorData[0].sensor_name}</span>
-              )}
-            </span>
-            {unbindSensorsData.length && (
-              <Select
-                defaultValue={selectedSensor}
-                options={unbindSensorsData}
-                onChange={(option) => locationEvent(option)}
-                className='select-block'
-                styles={customStylesSelect}
-                placeholder='Выберите датчик'
-              />
+            {auth.access_name === 'Администратор' && (
+              <span
+                className='info-sensor__unbind-sensor'
+                onClick={() => unbindSensorClick()}
+              >
+                Отвязать датчик
+              </span>
             )}
           </div>
+        ) : (
+          auth.access_name === 'Администратор' && (
+            <div className='info-sensor info-sensor-not'>
+              <span className='info-sensor__title'>
+                Датчик не прикреплён.
+                {sensorData.length && (
+                  <span> Предыдущий: {sensorData[0].sensor_name}</span>
+                )}
+              </span>
+              {unbindSensorsData.length && (
+                <Select
+                  defaultValue={selectedSensor}
+                  options={unbindSensorsData}
+                  onChange={(option) => locationEvent(option)}
+                  className='select-block'
+                  styles={customStylesSelect}
+                  placeholder='Выберите датчик'
+                />
+              )}
+            </div>
+          )
         ))}
 
       <div className='control-buttons'>
-        {sensorName.length > 0 && (
+        {sensorName.length > 0 && auth.access_name !== 'Гость' && (
           <button
             className='main-btn add-info__btn'
             onClick={() => clickBindBtn()}

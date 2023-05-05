@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 
 import useHttp from '../../../../../../hooks/http.hook';
 import config from '../../../../../../config/main.json';
@@ -8,7 +8,11 @@ import StatusPanel from './statusPanel';
 import ControlPanel from './controlPanel';
 import DataTable from './dataTable';
 
+import { AuthContext } from '../../../../../../context/authContext';
+
 const ResultGrid = (props: any) => {
+  const auth = useContext(AuthContext);
+
   const { request } = useHttp();
 
   const [isBindSensorStatus, setIsBindSensorStatus] = useState(true);
@@ -46,14 +50,17 @@ const ResultGrid = (props: any) => {
   return (
     <div className='result-grid'>
       <div className='result-grid__top-block'>
-        <button
-          className={`main-btn bind-sensor__btn ${
-            isBindSensorStatus && 'disabled'
-          }`}
-          onClick={() => bindBtnClick()}
-        >
-          Привязать датчик
-        </button>
+        {auth.access_name === 'Администратор' && (
+          <button
+            className={`main-btn bind-sensor__btn ${
+              isBindSensorStatus && 'disabled'
+            }`}
+            onClick={() => bindBtnClick()}
+          >
+            Привязать датчик
+          </button>
+        )}
+
         <StatusPanel sensorData={sensorData} />
       </div>
       <ControlPanel

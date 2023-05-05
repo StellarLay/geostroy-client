@@ -43,9 +43,9 @@ const EditPiezo = (props: any) => {
   // Remove event
   const removePiezo = () => {
     const fetchData = async () => {
-      console.log(auth.accessToken);
+      console.log(props.activePiezo);
       try {
-        const url = `${config.URL}/api/removePiezo/${props.activePiezo.id}`;
+        const url = `${config.URL}/api/removePiezo/${props.activePiezo.piezometer_id}`;
         await request(url, 'DELETE', null);
 
         // Активируем статус "Удалено", чтобы в компоненте objectsBlock выполнить перерисовку объектов

@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHouse,
   faUser,
+  faGear,
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -26,7 +27,14 @@ let menuItems = [
     name: 'Пользователи',
     icon: faUser,
     href: '/users',
-    permission: 'Администратор',
+    permission: ['Администратор'],
+  },
+  {
+    id: 3,
+    name: 'Настройки',
+    icon: faGear,
+    href: '/settings',
+    permission: ['Администратор', 'Клиент'],
   },
 ];
 
@@ -47,7 +55,10 @@ const Menu = () => {
           {menuItems.map(
             (item) =>
               (item.name !== 'Пользователи' ||
-                auth.access_name === 'Администратор') && (
+                auth.access_name === 'Администратор') &&
+              (item.name !== 'Настройки' ||
+                auth.access_name === 'Администратор' ||
+                auth.access_name === 'Клиент') && (
                 <NavLink
                   to={item.href}
                   key={item.id}

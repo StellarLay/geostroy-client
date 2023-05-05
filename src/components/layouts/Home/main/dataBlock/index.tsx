@@ -52,7 +52,7 @@ const DataBlock = (props: any) => {
         const authorization = {
           Authorization: `Bearer ${auth.accessToken}`,
         };
-        const url = `${config.URL}/api/getSensors/${activePiezo.id}`;
+        const url = `${config.URL}/api/getSensors/${activePiezo.piezometer_id}`;
         const data = await request(url, 'GET', null, authorization);
 
         setSensor(data);

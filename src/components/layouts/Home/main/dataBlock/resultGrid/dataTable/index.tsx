@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -15,7 +15,11 @@ import useHttp from '../../../../../../../hooks/http.hook';
 // Config
 import config from '../../../../../../../config/main.json';
 
+import { AuthContext } from '../../../../../../../context/authContext';
+
 const DataTable = (props: any) => {
+  const auth = useContext(AuthContext);
+
   const [tableData, setTableData] = useState<ITableData[]>([]);
 
   const [activeData, setActiveData] = useState<ISensorsData>();
@@ -186,14 +190,18 @@ const DataTable = (props: any) => {
               <span className='data-table__th-subtitle'>{header.subtitle}</span>
             </div>
           ))}
-          <FontAwesomeIcon
-            icon={faSquarePen}
-            className='edit-icon dots-table-hidden'
-          />
-          <FontAwesomeIcon
-            icon={faTrash}
-            className='remove-icon dots-table-hidden'
-          />
+          {auth.access_name !== 'Гость' && (
+            <React.Fragment>
+              <FontAwesomeIcon
+                icon={faSquarePen}
+                className='edit-icon dots-table-hidden'
+              />
+              <FontAwesomeIcon
+                icon={faTrash}
+                className='remove-icon dots-table-hidden'
+              />
+            </React.Fragment>
+          )}
         </div>
         {tableData &&
           tableData.map((item) => (
@@ -236,18 +244,22 @@ const DataTable = (props: any) => {
                   })}
                 </span>
               </div>
-              <FontAwesomeIcon
-                icon={faSquarePen}
-                className='edit-icon'
-                title='Изменить'
-                onClick={() => changeDataHandler(item)}
-              />
-              <FontAwesomeIcon
-                icon={faTrash}
-                className='remove-icon'
-                title='Удалить'
-                onClick={() => removeSensor(item.id)}
-              />
+              {auth.access_name !== 'Гость' && (
+                <React.Fragment>
+                  <FontAwesomeIcon
+                    icon={faSquarePen}
+                    className='edit-icon'
+                    title='Изменить'
+                    onClick={() => changeDataHandler(item)}
+                  />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className='remove-icon'
+                    title='Удалить'
+                    onClick={() => removeSensor(item.id)}
+                  />
+                </React.Fragment>
+              )}
             </motion.div>
           ))}
         {(isRemove || isUpdated || isError) && (

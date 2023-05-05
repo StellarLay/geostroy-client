@@ -68,10 +68,27 @@ const PiezometersBlock = (props: any) => {
       return;
     }
 
+    //if (auth.access_name !== 'Администратор') {
+    // const fetchData = async () => {
+    //   try {
+    //     const url = `${config.URL}/api/getPiezometers/${activeObject.id}`;
+    //     const data = await request(url, 'GET');
+
+    //     setPiezometers(data);
+    //     console.log(data);
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // };
+
     const fetchData = async () => {
       try {
-        const url = `${config.URL}/api/getPiezometers/${activeObject.id}`;
-        const data = await request(url, 'GET');
+        const url = `${config.URL}/api/getPiezometersForClients`;
+        const data = await request(url, 'POST', {
+          access_name: auth.access_name,
+          object_id: activeObject.id,
+          user_id: auth.user_id,
+        });
 
         setPiezometers(data);
       } catch (e) {
@@ -80,7 +97,26 @@ const PiezometersBlock = (props: any) => {
     };
 
     fetchData();
-  }, [request, activeObject, isAdd, isRemove]);
+    //}
+    // else {
+    //   const fetchData = async () => {
+    //     try {
+    //       const url = `${config.URL}/api/getPiezometersForClients`;
+    //       const data = await request(url, 'POST', {
+    //         access_name: auth.access_name,
+    //         object_id: activeObject.id,
+    //         user_id: auth.user_id,
+    //       });
+
+    //       setPiezometers(data);
+    //     } catch (e) {
+    //       console.log(e);
+    //     }
+    //   };
+
+    //   fetchData();
+    // }
+  }, [request, activeObject, isAdd, isRemove, auth.access_name, auth.user_id]);
 
   const selectActivePiezometer = (e: any, id: number) => {
     const filter = piezometers.filter((item) => item.id === id);
@@ -147,7 +183,7 @@ const PiezometersBlock = (props: any) => {
       <div className='table-block piezometers-block'>
         <div className='table-caption'>
           <span>Пьезометр</span>
-          {activeObject.length !== 0 && (
+          {activeObject.length !== 0 && auth.access_name !== 'Гость' && (
             <FontAwesomeIcon
               icon={toggle ? faSquareMinus : faSquarePlus}
               className='plus-icon'

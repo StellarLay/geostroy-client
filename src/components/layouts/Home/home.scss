@@ -300,18 +300,20 @@
           margin-top: 20px;
 
           .info-sensor {
-            width: 325px;
+            width: 400px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
 
             .info-sensor__title {
               font-weight: 700;
+              margin-right: 8px;
             }
 
             .info-sensor__name {
               color: #0069b5d9;
               font-weight: 700;
+              margin-right: 8px;
             }
 
             .info-sensor__status {

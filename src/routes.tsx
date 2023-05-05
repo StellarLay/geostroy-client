@@ -6,6 +6,7 @@ import ResetPass from './components/auth/reset';
 
 import './media.scss';
 import UsersPage from './pages/Users';
+import SettingsPage from './pages/Settings';
 
 export const useRoutes = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -18,6 +19,10 @@ export const useRoutes = (isAuthenticated: boolean) => {
         <Route
           path='/users'
           element={isAuthenticated ? <UsersPage /> : <Auth />}
+        />
+        <Route
+          path='/settings'
+          element={isAuthenticated ? <SettingsPage /> : <Auth />}
         />
         <Route path='/' element={<Main />} />
       </Routes>
@@ -41,6 +46,10 @@ export const useRoutes = (isAuthenticated: boolean) => {
       <Route
         path='/users'
         element={isAuthenticated ? <UsersPage /> : <Auth />}
+      />
+      <Route
+        path='/settings'
+        element={isAuthenticated ? <SettingsPage /> : <Auth />}
       />
     </Routes>
   );
