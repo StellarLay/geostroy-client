@@ -233,13 +233,13 @@ export const customStylSelectSettingsUser = {
   option: (provided: any, state: any) => ({
     ...provided,
     padding: 12,
-    width: '300px',
+    width: '260px',
     color: state.isFocused ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.7)',
     backgroundColor: state.isFocused ? '#3f5888' : null,
   }),
   control: (base: any) => ({
     ...base,
-    width: '300px',
+    width: '260px',
     border: '2px solid #3f58882d;',
     boxShadow: 'none',
     cursor: 'pointer',
